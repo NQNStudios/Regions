@@ -2,7 +2,6 @@ package com.natman.regions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -28,6 +27,9 @@ public class AppWindow extends Window implements ActionListener {
 	private JMenuItem openFileButton;
 	private JMenuItem saveFileButton;
 	
+	private JMenu optionsMenu;
+	private JMenuItem directoryOptionsButton;
+	
 	/**
 	 * Creates and sizes the application window.
 	 */
@@ -43,7 +45,6 @@ public class AppWindow extends Window implements ActionListener {
         
         //Create the file menu
         fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
         menuBar.add(fileMenu);
         
         newFileButton = new JMenuItem("New");
@@ -60,6 +61,15 @@ public class AppWindow extends Window implements ActionListener {
         saveFileButton.setActionCommand("saveFile");
         saveFileButton.addActionListener(this);
         fileMenu.add(saveFileButton);
+        
+        //Create the options menu
+        optionsMenu = new JMenu("Options");
+        menuBar.add(optionsMenu);
+        
+        directoryOptionsButton = new JMenuItem("Sprite Sheet Directory");
+        directoryOptionsButton.setActionCommand("directoryOptions");
+        directoryOptionsButton.addActionListener(this);
+        optionsMenu.add(directoryOptionsButton);
 	}
 
 	@Override
@@ -72,6 +82,9 @@ public class AppWindow extends Window implements ActionListener {
 			openFileWindow.setVisible(true);
 		} else if (e.getActionCommand().equals("saveFile")) {
 			
+		} else if (e.getActionCommand().equals("directoryOptions")) {
+			DirectoryOptionsWindow directoryOptionsWindow = new DirectoryOptionsWindow();
+			directoryOptionsWindow.setVisible(true);
 		}
 	}
 	
