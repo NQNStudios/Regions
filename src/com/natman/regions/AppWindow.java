@@ -152,6 +152,8 @@ public class AppWindow extends Window implements ActionListener {
 	//region File Management
 	
 	private void openFile(File file) {
+		tableModel.setRowCount(0);
+		
 		try {
 			
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -175,11 +177,11 @@ public class AppWindow extends Window implements ActionListener {
 						new Object[] { key, region });
 			}
 			
-			regionsTable.repaint();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		regionsTable.repaint();
 	}
 	
 	//endregion
