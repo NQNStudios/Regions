@@ -18,5 +18,26 @@ public class Rectangle {
 		this.width = width;
 		this.height = height;
 	}
+
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ", " + width + ", " + height + ")";
+	}
+	
+	/**
+	 * Parses a Rectangle from a string.
+	 * @param text The Rectangle in string form. Example: "(4, 24, 32, 32)"
+	 * @return Rectangle instance parsed from the given string.
+	 */
+	public static Rectangle parseRectangle(String text) {
+		String[] dimmensions = text.split(", ");
+		
+		int x = Integer.parseInt(dimmensions[0]);
+		int y = Integer.parseInt(dimmensions[1]);
+		int width = Integer.parseInt(dimmensions[2]);
+		int height = Integer.parseInt(dimmensions[3]);
+		
+		return new Rectangle(x, y, width, height);
+	}
 	
 }
