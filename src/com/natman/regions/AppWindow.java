@@ -1,5 +1,6 @@
 package com.natman.regions;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * JFrame performing all the main functions of Regions.
@@ -20,6 +24,8 @@ public class AppWindow extends Window implements ActionListener {
 	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
 	
+	private static final int MAX_REGIONS = 300;
+	
 	private JMenuBar menuBar;
 	
 	private JMenu fileMenu;
@@ -29,6 +35,11 @@ public class AppWindow extends Window implements ActionListener {
 	
 	private JMenu optionsMenu;
 	private JMenuItem directoryOptionsButton;
+	
+	private JScrollPane regionsPane;
+	private JTable regionsTable;
+	
+	private DefaultTableModel tableModel;
 	
 	/**
 	 * Creates and sizes the application window.
@@ -70,6 +81,17 @@ public class AppWindow extends Window implements ActionListener {
         directoryOptionsButton.setActionCommand("directoryOptions");
         directoryOptionsButton.addActionListener(this);
         optionsMenu.add(directoryOptionsButton);
+        
+        //Create the regions table
+        tableModel = new DefaultTableModel(
+        		new String[] { "Key", "Region" }, 
+        		MAX_REGIONS);
+        
+        regionsTable = new JTable(tableModel);
+        regionsTable.setFillsViewportHeight(true);
+        
+        regionsPane = new JScrollPane(regionsTable);
+        getContentPane().add(regionsPane, BorderLayout.LINE_END);
 	}
 
 	@Override
