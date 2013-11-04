@@ -3,7 +3,10 @@ package com.natman.regions;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.prefs.Preferences;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -11,6 +14,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * JFrame performing all the main functions of Regions.
@@ -19,12 +28,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AppWindow extends Window implements ActionListener {
 	
+	//region Config
+	
 	private static final long serialVersionUID = -5202563554367760480L;
 	
 	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
 	
-	private static final int MAX_REGIONS = 300;
+	//endregion
+	
+	//region Fields
 	
 	private JMenuBar menuBar;
 	
@@ -40,6 +53,10 @@ public class AppWindow extends Window implements ActionListener {
 	private JTable regionsTable;
 	
 	private DefaultTableModel tableModel;
+	
+	//endregion
+	
+	//region Initialization
 	
 	/**
 	 * Creates and sizes the application window.
@@ -58,7 +75,7 @@ public class AppWindow extends Window implements ActionListener {
 		//Create the regions table
         tableModel = new DefaultTableModel(
         		new String[] { "Key", "Region" }, 
-        		MAX_REGIONS);
+        		0);
         
         regionsTable = new JTable(tableModel);
         regionsTable.setFillsViewportHeight(true);
@@ -100,15 +117,28 @@ public class AppWindow extends Window implements ActionListener {
         directoryOptionsButton.addActionListener(this);
         optionsMenu.add(directoryOptionsButton);
 	}
+	
+	//endregion
 
+	//region Events
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("newFile")) {
 			NewFileWindow newFileWindow = new NewFileWindow();
 			newFileWindow.setVisible(true);
 		} else if (e.getActionCommand().equals("openFile")) {
-			OpenFileWindow openFileWindow = new OpenFileWindow();
-			openFileWindow.setVisible(true);
+			JFileChooser openFileDialog = new JFileChooser();
+			openFileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			
+			Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
+			openFileDialog.setCurrentDirectory(new File(prefs.get("sheetDirectory", "")));
+			
+			int result = openFileDialog.showDialog(this, "Open File");
+			
+			if (result == JFileChooser.APPROVE_OPTION) {
+				openFile(openFileDialog.getSelectedFile());
+			}
 		} else if (e.getActionCommand().equals("saveFile")) {
 			
 		} else if (e.getActionCommand().equals("directoryOptions")) {
@@ -116,5 +146,42 @@ public class AppWindow extends Window implements ActionListener {
 			directoryOptionsWindow.setVisible(true);
 		}
 	}
+	
+	//endregion
+	
+	//region File Management
+	
+	private void openFile(File file) {
+		try {
+			
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document sheetXML = docBuilder.parse(file);
+			
+			Node sheetNode = sheetXML.getLastChild();
+			NodeList regionList = sheetNode.getChildNodes();
+			
+			for (int i = 0; i < regionList.getLength(); i++) {
+				Node node = regionList.item(i);
+				
+				if (!node.getNodeName().equals("rect")) continue;
+				
+				String key = node.getAttributes().getNamedItem("key").getTextContent();
+				String value = node.getTextContent();
+				
+				Rectangle region = Rectangle.parseRectangle(value);
+				
+				tableModel.addRow(
+						new Object[] { key, region });
+			}
+			
+			regionsTable.repaint();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//endregion
 	
 }

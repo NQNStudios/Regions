@@ -36,7 +36,7 @@ public class DirectoryOptionsWindow extends Window implements ActionListener {
 		browseButton.addActionListener(this);
 		getContentPane().add(browseButton, BorderLayout.LINE_END);
 		
-		prefs = Preferences.userRoot().node(getClass().getName());
+		prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
 		
 		directoryField.setText(prefs.get("sheetDirectory", ""));
 	}
