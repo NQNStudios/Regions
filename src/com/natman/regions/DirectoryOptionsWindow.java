@@ -29,12 +29,12 @@ public class DirectoryOptionsWindow extends Window implements ActionListener {
 		setSize(525, 30);
 		
 		directoryField = new JTextField(40);
-		getContentPane().add(directoryField, BorderLayout.LINE_START);
+		add(directoryField, BorderLayout.LINE_START);
 		
 		browseButton = new JButton("Choose");
 		browseButton.setActionCommand("browse");
 		browseButton.addActionListener(this);
-		getContentPane().add(browseButton, BorderLayout.LINE_END);
+		add(browseButton, BorderLayout.LINE_END);
 		
 		prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
 		

@@ -1,11 +1,14 @@
 package com.natman.regions;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.prefs.Preferences;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -49,10 +52,15 @@ public class AppWindow extends Window implements ActionListener {
 	private JMenu optionsMenu;
 	private JMenuItem directoryOptionsButton;
 	
+	private ImagePanel textureCanvas;
+	private JScrollPane textureScrollPanel;
+	
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
 	
 	private DefaultTableModel tableModel;
+	
+	private SpriteSheet spriteSheet;
 	
 	//endregion
 	
@@ -68,9 +76,16 @@ public class AppWindow extends Window implements ActionListener {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         
         createMenuBar();
+        createTexturePanel();
         createRegionsTable();
 	}
 
+	private void createTexturePanel() {
+		textureCanvas = new ImagePanel();
+		textureScrollPanel = new JScrollPane(textureCanvas);
+		add(textureScrollPanel, BorderLayout.LINE_START);
+	}
+	
 	private void createRegionsTable() {
 		//Create the regions table
         tableModel = new DefaultTableModel(
@@ -81,7 +96,8 @@ public class AppWindow extends Window implements ActionListener {
         regionsTable.setFillsViewportHeight(true);
         
         regionsPane = new JScrollPane(regionsTable);
-        getContentPane().add(regionsPane, BorderLayout.LINE_END);
+        regionsPane.setPreferredSize(new Dimension(300, 0));
+        add(regionsPane, BorderLayout.LINE_END);
 	}
 
 	private void createMenuBar() {
@@ -153,6 +169,7 @@ public class AppWindow extends Window implements ActionListener {
 	
 	private void openFile(File file) {
 		tableModel.setRowCount(0);
+		spriteSheet = null;
 		
 		try {
 			
@@ -166,15 +183,31 @@ public class AppWindow extends Window implements ActionListener {
 			for (int i = 0; i < regionList.getLength(); i++) {
 				Node node = regionList.item(i);
 				
-				if (!node.getNodeName().equals("rect")) continue;
+				if (node.getNodeName().equals("texture")) {
+					
+					Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
+					String directory = prefs.get("sheetDirectory", "");
+					String path = node.getTextContent();
+					spriteSheet = new SpriteSheet(path);
+					
+					BufferedImage image = null;
+					image = ImageIO.read(new File(directory + "\\" + path));
+					textureCanvas.setImage(image);
+					
+					textureCanvas.repaint();
+					
+				} else if (node.getNodeName().equals("rect")) {
 				
-				String key = node.getAttributes().getNamedItem("key").getTextContent();
-				String value = node.getTextContent();
-				
-				Rectangle region = Rectangle.parseRectangle(value);
-				
-				tableModel.addRow(
-						new Object[] { key, region });
+					String key = node.getAttributes().getNamedItem("key").getTextContent();
+					String value = node.getTextContent();
+					
+					Rectangle region = Rectangle.parseRectangle(value);
+					
+					spriteSheet.addRegion(key, region);
+					
+					tableModel.addRow(
+							new Object[] { key, region });
+				}
 			}
 			
 		} catch (Exception e) {
