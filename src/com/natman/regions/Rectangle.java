@@ -19,13 +19,4 @@ public class Rectangle {
 		this.height = height;
 	}
 	
-	/**
-	 * @param key The key that this Rectangle is represented by in the sprite sheet.
-	 * @return An XML node encoding this Rectangle's data.
-	 */
-	public String xmlNode(String key) {
-		return "<rect key=\"" + key + "\">" + 
-				x + ", " + y + ", " + width + ", " + height + "</rect>";
-	}
-	
 }

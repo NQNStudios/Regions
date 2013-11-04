@@ -50,7 +50,25 @@ public class AppWindow extends Window implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         
-        //Create the menu bar
+        createMenuBar();
+        createRegionsTable();
+	}
+
+	private void createRegionsTable() {
+		//Create the regions table
+        tableModel = new DefaultTableModel(
+        		new String[] { "Key", "Region" }, 
+        		MAX_REGIONS);
+        
+        regionsTable = new JTable(tableModel);
+        regionsTable.setFillsViewportHeight(true);
+        
+        regionsPane = new JScrollPane(regionsTable);
+        getContentPane().add(regionsPane, BorderLayout.LINE_END);
+	}
+
+	private void createMenuBar() {
+		//Create the menu bar
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         
@@ -81,17 +99,6 @@ public class AppWindow extends Window implements ActionListener {
         directoryOptionsButton.setActionCommand("directoryOptions");
         directoryOptionsButton.addActionListener(this);
         optionsMenu.add(directoryOptionsButton);
-        
-        //Create the regions table
-        tableModel = new DefaultTableModel(
-        		new String[] { "Key", "Region" }, 
-        		MAX_REGIONS);
-        
-        regionsTable = new JTable(tableModel);
-        regionsTable.setFillsViewportHeight(true);
-        
-        regionsPane = new JScrollPane(regionsTable);
-        getContentPane().add(regionsPane, BorderLayout.LINE_END);
 	}
 
 	@Override
