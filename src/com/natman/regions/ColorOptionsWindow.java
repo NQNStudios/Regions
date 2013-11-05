@@ -62,6 +62,12 @@ public class ColorOptionsWindow extends Window implements ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		if (redSlider.getValueIsAdjusting()
+				|| greenSlider.getValueIsAdjusting()
+				|| blueSlider.getValueIsAdjusting()) {
+			return;
+		}
+		
 		int red = redSlider.getValue();
 		int green = greenSlider.getValue();
 		int blue = blueSlider.getValue();
