@@ -16,7 +16,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @author Natman64
  * @created  Nov 3, 2013
  */
-public class AppWindow extends Window implements ActionListener {
+public class AppWindow extends Window implements ActionListener, ChangeListener {
 	
 	//region Config
 	
@@ -56,6 +59,7 @@ public class AppWindow extends Window implements ActionListener {
 	
 	private ImagePanel textureCanvas;
 	private JScrollPane textureScrollPanel;
+	private JSlider zoomSlider;
 	
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
@@ -91,6 +95,10 @@ public class AppWindow extends Window implements ActionListener {
 		
 		textureScrollPanel = new JScrollPane(textureCanvas);
 		add(textureScrollPanel, BorderLayout.LINE_START);
+		
+		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 16, 1);
+		zoomSlider.addChangeListener(this);
+		add(zoomSlider, BorderLayout.CENTER);
 	}
 	
 	private void createRegionsTable() {
@@ -184,6 +192,14 @@ public class AppWindow extends Window implements ActionListener {
 			ColorOptionsWindow colorOptionsWindow = new ColorOptionsWindow(this);
 			colorOptionsWindow.setVisible(true);
 		}
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		float scale = zoomSlider.getValue();
+		textureCanvas.setScale(scale);
+		
+		textureScrollPanel.setViewportView(textureCanvas);
 	}
 	
 	//endregion

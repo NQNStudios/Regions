@@ -31,6 +31,15 @@ public class ImagePanel extends JPanel {
 	
 	public void setScale(float scale) {
 		this.scale = scale;
+		
+		if (image != null) {
+			setPreferredSize(
+					new Dimension(
+							(int) (image.getWidth(null) * scale),
+							(int) (image.getHeight(null) * scale)));
+		}
+		
+		repaint();
 	}
 	
 	public void setBackgroundColor(Color backgroundColor) {
