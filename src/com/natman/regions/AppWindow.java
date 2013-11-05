@@ -1,6 +1,7 @@
 package com.natman.regions;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,7 @@ public class AppWindow extends Window implements ActionListener {
 	
 	private JMenu optionsMenu;
 	private JMenuItem directoryOptionsButton;
+	private JMenuItem backgroundColorOptionsButton;
 	
 	private ImagePanel textureCanvas;
 	private JScrollPane textureScrollPanel;
@@ -82,6 +84,11 @@ public class AppWindow extends Window implements ActionListener {
 
 	private void createTexturePanel() {
 		textureCanvas = new ImagePanel();
+		
+		Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
+		Color bgColor = Color.decode(prefs.get("BackgroundColor", "" + Color.gray.getRGB()));
+		textureCanvas.setBackgroundColor(bgColor);
+		
 		textureScrollPanel = new JScrollPane(textureCanvas);
 		add(textureScrollPanel, BorderLayout.LINE_START);
 	}
@@ -132,10 +139,23 @@ public class AppWindow extends Window implements ActionListener {
         directoryOptionsButton.setActionCommand("directoryOptions");
         directoryOptionsButton.addActionListener(this);
         optionsMenu.add(directoryOptionsButton);
+        
+        backgroundColorOptionsButton = new JMenuItem("Background Color");
+        backgroundColorOptionsButton.setActionCommand("colorOptions");
+        backgroundColorOptionsButton.addActionListener(this);
+        optionsMenu.add(backgroundColorOptionsButton);
 	}
 	
 	//endregion
 
+	//region Accessors
+	
+	public ImagePanel getTextureCanvas() {
+		return textureCanvas;
+	}
+	
+	//endregion
+	
 	//region Events
 	
 	@Override
@@ -160,6 +180,9 @@ public class AppWindow extends Window implements ActionListener {
 		} else if (e.getActionCommand().equals("directoryOptions")) {
 			DirectoryOptionsWindow directoryOptionsWindow = new DirectoryOptionsWindow();
 			directoryOptionsWindow.setVisible(true);
+		} else if (e.getActionCommand().equals("colorOptions")) {
+			ColorOptionsWindow colorOptionsWindow = new ColorOptionsWindow(this);
+			colorOptionsWindow.setVisible(true);
 		}
 	}
 	

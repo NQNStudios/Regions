@@ -1,5 +1,6 @@
 package com.natman.regions;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -15,6 +16,9 @@ public class ImagePanel extends JPanel {
 
 	private static final long serialVersionUID = -4866023796840902035L;
 	
+	private float scale = 1f;
+	private Color backgroundColor = Color.gray;
+	
 	private Image image;
 	
 	public ImagePanel() {
@@ -25,16 +29,36 @@ public class ImagePanel extends JPanel {
 		setImage(image);
 	}
 	
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+	
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+		
+		repaint();
+	}
+	
 	public void setImage(Image image) {
 		this.image = image;
 		
-		setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+		setPreferredSize(
+				new Dimension(
+						(int) (image.getWidth(null) * scale),
+						(int) (image.getHeight(null) * scale)));
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(image, 0, 0, null);
+		
+		if (image != null) {
+			g.drawImage(image, 
+					0, 0, 
+					(int) (image.getWidth(null) * scale),
+					(int) (image.getHeight(null) * scale),
+					backgroundColor, null);
+		}
 	}
 	
 }
