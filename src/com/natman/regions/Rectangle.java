@@ -21,7 +21,7 @@ public class Rectangle {
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ", " + width + ", " + height + ")";
+		return x + ", " + y + ", " + width + ", " + height;
 	}
 	
 	/**

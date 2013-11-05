@@ -20,7 +20,6 @@ import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -64,9 +63,10 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
 	
-	private DefaultTableModel tableModel;
+	private RegionsTableModel tableModel;
 	
 	private SpriteSheet spriteSheet;
+	private File spriteSheetFile;
 	
 	//endregion
 	
@@ -103,9 +103,7 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	
 	private void createRegionsTable() {
 		//Create the regions table
-        tableModel = new DefaultTableModel(
-        		new String[] { "Key", "Region" }, 
-        		0);
+        tableModel = new RegionsTableModel();
         
         regionsTable = new JTable(tableModel);
         regionsTable.setFillsViewportHeight(true);
@@ -184,7 +182,9 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 				openFile(openFileDialog.getSelectedFile());
 			}
 		} else if (e.getActionCommand().equals("saveFile")) {
-			
+			if (spriteSheet != null) {
+				spriteSheet.saveToFile(spriteSheetFile);
+			}
 		} else if (e.getActionCommand().equals("directoryOptions")) {
 			DirectoryOptionsWindow directoryOptionsWindow = new DirectoryOptionsWindow();
 			directoryOptionsWindow.setVisible(true);
@@ -196,6 +196,10 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		if (zoomSlider.getValueIsAdjusting()) {
+			return;
+		}
+		
 		float scale = zoomSlider.getValue();
 		textureCanvas.setScale(scale);
 		
@@ -228,6 +232,7 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 					String directory = prefs.get("sheetDirectory", "");
 					String path = node.getTextContent();
 					spriteSheet = new SpriteSheet(path);
+					tableModel.setSpriteSheet(spriteSheet);
 					
 					BufferedImage image = null;
 					image = ImageIO.read(new File(directory + "\\" + path));
@@ -252,6 +257,8 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		spriteSheetFile = file;
 		
 		regionsTable.repaint();
 	}
