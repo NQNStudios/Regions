@@ -13,8 +13,12 @@ public class RegionsTableModel extends DefaultTableModel {
 	
 	private SpriteSheet spriteSheet;
 	
-	public RegionsTableModel() {
+	private AppWindow window;
+	
+	public RegionsTableModel(AppWindow window) {
 		super(new String[] { "Key", "Region" }, 0);
+		
+		this.window = window;
 	}
 	
 	public void setSpriteSheet(SpriteSheet spriteSheet) {
@@ -56,8 +60,8 @@ public class RegionsTableModel extends DefaultTableModel {
 		}
 		
 		super.setValueAt(value, row, column);
+		
+		window.repaintImage();
 	}
-	
-	
 	
 }

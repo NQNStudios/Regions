@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,8 @@ import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -33,7 +36,9 @@ import org.w3c.dom.NodeList;
  * @author Natman64
  * @created  Nov 3, 2013
  */
-public class AppWindow extends Window implements ActionListener, ChangeListener {
+public class AppWindow extends Window implements ActionListener, 
+												ChangeListener, 
+												ListSelectionListener {
 	
 	//region Config
 	
@@ -107,10 +112,12 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	
 	private void createRegionsTable() {
 		//Create the regions table
-        tableModel = new RegionsTableModel();
-        
+        tableModel = new RegionsTableModel(this);
+
         regionsTable = new JTable(tableModel);
         regionsTable.setFillsViewportHeight(true);
+        
+        regionsTable.getSelectionModel().addListSelectionListener(this);
         
         regionsPane = new JScrollPane(regionsTable);
         regionsPane.setPreferredSize(new Dimension(300, 0));
@@ -187,6 +194,10 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 		}
 	}
 	
+	public void repaintImage() {
+		textureCanvas.repaint();
+	}
+	
 	//endregion
 	
 	//region Events
@@ -234,6 +245,18 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 		textureCanvas.setScale(scale);
 		
 		textureScrollPanel.setViewportView(textureCanvas);
+	}
+	
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		int row = regionsTable.getSelectedRow();
+		
+		ArrayList<String> temp = new ArrayList<String>(spriteSheet.regions.keySet());
+		String selectedKey = (String) temp.get(row);
+		
+		spriteSheet.currentRegion = selectedKey;
+		
+		repaintImage();
 	}
 	
 	//endregion

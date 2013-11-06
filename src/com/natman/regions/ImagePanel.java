@@ -82,6 +82,13 @@ public class ImagePanel extends JPanel {
 			while (it.hasNext()) {
 				Entry<String, Rectangle> entry = it.next();
 				
+				String key = entry.getKey();
+				if (!spriteSheet.currentRegion.isEmpty()) {
+					if (!key.equals(spriteSheet.currentRegion)) {
+						continue;
+					}
+				}
+				
 				Rectangle rect = entry.getValue();
 				g.setColor(outlineColor);
 				

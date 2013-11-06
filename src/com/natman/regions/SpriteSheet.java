@@ -27,6 +27,7 @@ public class SpriteSheet {
 	
 	public String texturePath;
 	public Map<String, Rectangle> regions = new HashMap<String, Rectangle>();
+	public String currentRegion = "";
 	
 	/**
 	 * Constructor.
