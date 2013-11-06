@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
@@ -52,6 +53,9 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	private JMenuItem openFileButton;
 	private JMenuItem saveFileButton;
 	
+	private JMenu editMenu;
+	private JMenuItem texturePathButton;
+	
 	private JMenu optionsMenu;
 	private JMenuItem directoryOptionsButton;
 	private JMenuItem backgroundColorOptionsButton;
@@ -96,7 +100,7 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 		textureScrollPanel = new JScrollPane(textureCanvas);
 		add(textureScrollPanel, BorderLayout.LINE_START);
 		
-		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 16, 1);
+		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
 		zoomSlider.addChangeListener(this);
 		add(zoomSlider, BorderLayout.CENTER);
 	}
@@ -137,6 +141,16 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
         saveFileButton.addActionListener(this);
         fileMenu.add(saveFileButton);
         
+        //Create the edit menu
+        editMenu = new JMenu("Edit");
+        menuBar.add(editMenu);
+        
+        texturePathButton = new JMenuItem("Texture Path");
+        texturePathButton.setActionCommand("editTexturePath");
+        texturePathButton.addActionListener(this);
+        texturePathButton.setEnabled(false);
+        editMenu.add(texturePathButton);
+        
         //Create the options menu
         optionsMenu = new JMenu("Options");
         menuBar.add(optionsMenu);
@@ -158,6 +172,19 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 	
 	public ImagePanel getTextureCanvas() {
 		return textureCanvas;
+	}
+	
+	public void refreshImage() {
+		try {
+			Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
+			String directory = prefs.get("sheetDirectory", "");
+			
+			BufferedImage image = null;
+			image = ImageIO.read(new File(directory + "\\" + spriteSheet.texturePath));
+			textureCanvas.setImage(image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//endregion
@@ -185,6 +212,9 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 			if (spriteSheet != null) {
 				spriteSheet.saveToFile(spriteSheetFile);
 			}
+		} else if (e.getActionCommand().equals("editTexturePath")) {
+			TexturePathWindow texturePathWindow = new TexturePathWindow(this, spriteSheet);
+			texturePathWindow.setVisible(true);
 		} else if (e.getActionCommand().equals("directoryOptions")) {
 			DirectoryOptionsWindow directoryOptionsWindow = new DirectoryOptionsWindow();
 			directoryOptionsWindow.setVisible(true);
@@ -237,7 +267,7 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 					BufferedImage image = null;
 					image = ImageIO.read(new File(directory + "\\" + path));
 					textureCanvas.setImage(image);
-					
+					textureCanvas.setSpriteSheet(spriteSheet);
 					textureCanvas.repaint();
 					
 				} else if (node.getNodeName().equals("rect")) {
@@ -260,6 +290,7 @@ public class AppWindow extends Window implements ActionListener, ChangeListener 
 		
 		spriteSheetFile = file;
 		
+		texturePathButton.setEnabled(true);
 		regionsTable.repaint();
 	}
 	
