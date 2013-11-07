@@ -251,10 +251,9 @@ public class AppWindow extends Window implements ActionListener,
 	public void valueChanged(ListSelectionEvent e) {
 		int row = regionsTable.getSelectedRow();
 		
-		ArrayList<String> temp = new ArrayList<String>(spriteSheet.regions.keySet());
-		String selectedKey = (String) temp.get(row);
+		String key = (String) regionsTable.getValueAt(row, 0);
 		
-		spriteSheet.currentRegion = selectedKey;
+		spriteSheet.currentRegion = key;
 		
 		repaintImage();
 	}
