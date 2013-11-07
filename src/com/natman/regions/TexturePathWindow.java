@@ -7,9 +7,10 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-public class TexturePathWindow extends Window implements ActionListener {
+public class TexturePathWindow extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = -7779530467230160609L;
 	

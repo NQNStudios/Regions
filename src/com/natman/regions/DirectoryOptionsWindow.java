@@ -7,6 +7,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 /**
@@ -14,7 +15,7 @@ import javax.swing.JTextField;
  * @author Natman64
  * @created  Nov 3, 2013
  */
-public class DirectoryOptionsWindow extends Window implements ActionListener {
+public class DirectoryOptionsWindow extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = -1084075550941948811L;
 	

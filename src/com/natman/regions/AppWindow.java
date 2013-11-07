@@ -1,14 +1,14 @@
 package com.natman.regions;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
  * @author Natman64
  * @created  Nov 3, 2013
  */
-public class AppWindow extends Window implements ActionListener, 
+public class AppWindow extends JFrame implements ActionListener, 
 												ChangeListener, 
 												ListSelectionListener {
 	
@@ -88,11 +88,15 @@ public class AppWindow extends Window implements ActionListener,
 		super("Regions");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        
+		
+		GridBagLayout layout = new GridBagLayout();
+        setLayout(layout);
+		
         createMenuBar();
         createTexturePanel();
         createRegionsTable();
+        
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	private void createTexturePanel() {
@@ -103,11 +107,19 @@ public class AppWindow extends Window implements ActionListener,
 		textureCanvas.setBackgroundColor(bgColor);
 		
 		textureScrollPanel = new JScrollPane(textureCanvas);
-		add(textureScrollPanel, BorderLayout.LINE_START);
 		
 		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
 		zoomSlider.addChangeListener(this);
-		add(zoomSlider, BorderLayout.CENTER);
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0; c.gridy = 0; 
+		c.fill = GridBagConstraints.NONE; 
+		add(zoomSlider, c);
+		
+		c.gridx = 1; c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 4;
+		add(textureScrollPanel, c);
 	}
 	
 	private void createRegionsTable() {
@@ -121,7 +133,12 @@ public class AppWindow extends Window implements ActionListener,
         
         regionsPane = new JScrollPane(regionsTable);
         regionsPane.setPreferredSize(new Dimension(300, 0));
-        add(regionsPane, BorderLayout.LINE_END);
+        
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 2; c.gridy = 0; 
+        c.fill = GridBagConstraints.BOTH; 
+        c.weightx = 1;
+        add(regionsPane, c);
 	}
 
 	private void createMenuBar() {

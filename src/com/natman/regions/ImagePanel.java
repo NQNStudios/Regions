@@ -28,7 +28,7 @@ public class ImagePanel extends JPanel {
 	private SpriteSheet spriteSheet;
 	
 	public ImagePanel() {
-		setPreferredSize(new Dimension(650, 500));
+		
 	}
 	
 	public void setScale(float scale) {

@@ -6,12 +6,13 @@ import java.awt.GridBagLayout;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class ColorOptionsWindow extends Window implements ChangeListener {
+public class ColorOptionsWindow extends JFrame implements ChangeListener {
 
 	private static final long serialVersionUID = 55373949416234483L;
 	

@@ -1,11 +1,13 @@
 package com.natman.regions;
 
+import javax.swing.JFrame;
+
 /**
  * Popup window for creating a new sprite sheet.
  * @author Natman64
  * @created  Nov 3, 2013
  */
-public class NewFileWindow extends Window {
+public class NewFileWindow extends JFrame {
 
 	private static final long serialVersionUID = 3687920556816789705L;
 	
