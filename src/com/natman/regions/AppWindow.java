@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -71,6 +73,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
+	private JButton deselectButton;
 	
 	private RegionsTableModel tableModel;
 	
@@ -130,16 +133,25 @@ public class AppWindow extends JFrame implements ActionListener,
         regionsTable = new JTable(tableModel);
         regionsTable.setFillsViewportHeight(true);
         
+        regionsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         regionsTable.getSelectionModel().addListSelectionListener(this);
         
         regionsPane = new JScrollPane(regionsTable);
         regionsPane.setPreferredSize(new Dimension(300, 0));
+        
+        deselectButton = new JButton("Clear Selection");
+        deselectButton.setActionCommand("clearSelection");
+        deselectButton.addActionListener(this);
         
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 2; c.gridy = 0; 
         c.fill = GridBagConstraints.BOTH; 
         c.weightx = 1;
         add(regionsPane, c);
+        
+        c.gridx = 2; c.gridy = 1;
+        c.fill = GridBagConstraints.NONE;
+        add(deselectButton, c);
 	}
 
 	private void createMenuBar() {
@@ -250,6 +262,8 @@ public class AppWindow extends JFrame implements ActionListener,
 		} else if (e.getActionCommand().equals("colorOptions")) {
 			ColorOptionsWindow colorOptionsWindow = new ColorOptionsWindow(this);
 			colorOptionsWindow.setVisible(true);
+		} else if (e.getActionCommand().equals("clearSelection")) {
+			regionsTable.clearSelection();
 		}
 	}
 	
@@ -269,9 +283,13 @@ public class AppWindow extends JFrame implements ActionListener,
 	public void valueChanged(ListSelectionEvent e) {
 		int row = regionsTable.getSelectedRow();
 		
-		String key = (String) regionsTable.getValueAt(row, 0);
-		
-		spriteSheet.currentRegion = key;
+		if (row == -1) {
+			spriteSheet.currentRegion = "";
+		} else {
+			String key = (String) regionsTable.getValueAt(row, 0);
+			
+			spriteSheet.currentRegion = key;
+		}
 		
 		repaintImage();
 	}
