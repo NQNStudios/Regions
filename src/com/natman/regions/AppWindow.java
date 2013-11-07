@@ -215,7 +215,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	
 	//endregion
 
-	//region Accessors
+	//region Accessors/Mutators
 	
 	public ImagePanel getTextureCanvas() {
 		return textureCanvas;
@@ -295,10 +295,12 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		if (row == -1) {
 			spriteSheet.currentRegion = "";
+			modePanel.setEnabled(false);
 		} else {
 			String key = (String) regionsTable.getValueAt(row, 0);
 			
 			spriteSheet.currentRegion = key;
+			modePanel.setEnabled(true);
 		}
 		
 		repaintImage();
@@ -359,7 +361,6 @@ public class AppWindow extends JFrame implements ActionListener,
 		spriteSheetFile = file;
 		
 		texturePathButton.setEnabled(true);
-		modePanel.setEnabled(true);
 		regionsTable.repaint();
 	}
 	

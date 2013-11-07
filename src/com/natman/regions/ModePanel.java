@@ -48,6 +48,10 @@ public class ModePanel extends JPanel {
 		for (Component c : getComponents()) {
 			c.setEnabled(enabled);
 		}
+		
+		if (!enabled) {
+			noneButton.setSelected(true);
+		}
 	}
 	
 	public String getMode() {
