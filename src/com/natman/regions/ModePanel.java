@@ -28,6 +28,10 @@ public class ModePanel extends JPanel {
 		editButton = new JRadioButton("Edit");
 		addButton = new JRadioButton("Add");
 		
+		noneButton.setActionCommand("None");
+		editButton.setActionCommand("Edit");
+		addButton.setActionCommand("Add");
+		
 		noneButton.setSelected(true);
 		
 		modeButtonGroup.add(noneButton);
@@ -44,6 +48,10 @@ public class ModePanel extends JPanel {
 		for (Component c : getComponents()) {
 			c.setEnabled(enabled);
 		}
+	}
+	
+	public String getMode() {
+		return modeButtonGroup.getSelection().getActionCommand();
 	}
 	
 }
