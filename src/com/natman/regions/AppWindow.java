@@ -118,7 +118,8 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		c.gridx = 1; c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 4;
+		c.weightx = 14;
+		c.weighty = 4;
 		add(textureScrollPanel, c);
 	}
 	
