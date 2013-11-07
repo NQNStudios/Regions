@@ -68,6 +68,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	private JMenuItem backgroundColorOptionsButton;
 	
 	private ImagePanel textureCanvas;
+	private ModePanel modePanel;
 	private JScrollPane textureScrollPanel;
 	private JSlider zoomSlider;
 	
@@ -114,6 +115,9 @@ public class AppWindow extends JFrame implements ActionListener,
 		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
 		zoomSlider.addChangeListener(this);
 		
+		modePanel = new ModePanel();
+		modePanel.setEnabled(false);
+		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0; c.gridy = 0; 
 		c.fill = GridBagConstraints.NONE; 
@@ -124,6 +128,12 @@ public class AppWindow extends JFrame implements ActionListener,
 		c.weightx = 14;
 		c.weighty = 4;
 		add(textureScrollPanel, c);
+		
+		c.gridx = 1; c.gridy = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0;
+		c.weighty = 0;
+		add(modePanel, c);
 	}
 	
 	private void createRegionsTable() {
@@ -349,6 +359,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		spriteSheetFile = file;
 		
 		texturePathButton.setEnabled(true);
+		modePanel.setEnabled(true);
 		regionsTable.repaint();
 	}
 	
