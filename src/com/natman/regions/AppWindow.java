@@ -68,9 +68,10 @@ public class AppWindow extends JFrame implements ActionListener,
 	private JMenuItem backgroundColorOptionsButton;
 	
 	private ImagePanel textureCanvas;
-	private ModePanel modePanel;
 	private JScrollPane textureScrollPanel;
 	private JSlider zoomSlider;
+	
+	private EditRegionPanel editRegionPanel;
 	
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
@@ -115,8 +116,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
 		zoomSlider.addChangeListener(this);
 		
-		modePanel = new ModePanel();
-		modePanel.setEnabled(false);
+		editRegionPanel = new EditRegionPanel(this);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0; c.gridy = 0; 
@@ -133,7 +133,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0;
 		c.weighty = 0;
-		add(modePanel, c);
+		add(editRegionPanel, c);
 	}
 	
 	private void createRegionsTable() {
@@ -295,12 +295,10 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		if (row == -1) {
 			spriteSheet.currentRegion = "";
-			modePanel.setEnabled(false);
 		} else {
 			String key = (String) regionsTable.getValueAt(row, 0);
 			
 			spriteSheet.currentRegion = key;
-			modePanel.setEnabled(true);
 		}
 		
 		repaintImage();
@@ -362,6 +360,8 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		texturePathButton.setEnabled(true);
 		regionsTable.repaint();
+		
+		editRegionPanel.setSpriteSheet(spriteSheet);
 	}
 	
 	//endregion
