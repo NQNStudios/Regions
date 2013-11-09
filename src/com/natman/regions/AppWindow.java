@@ -71,7 +71,9 @@ public class AppWindow extends JFrame implements ActionListener,
 	private JScrollPane textureScrollPanel;
 	private JSlider zoomSlider;
 	
+	private AddRegionPanel addRegionPanel;
 	private EditRegionPanel editRegionPanel;
+	private RegionUIPanel regionUIPanel;
 	
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
@@ -116,6 +118,9 @@ public class AppWindow extends JFrame implements ActionListener,
 		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
 		zoomSlider.addChangeListener(this);
 		
+		regionUIPanel = new RegionUIPanel(this);
+		
+		addRegionPanel = new AddRegionPanel(this, textureCanvas);
 		editRegionPanel = new EditRegionPanel(this);
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -131,9 +136,9 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		c.gridx = 1; c.gridy = 1;
 		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0;
-		c.weighty = 0;
-		add(editRegionPanel, c);
+		c.weightx = 1;
+		c.weighty = 1;
+		add(regionUIPanel, c);
 	}
 	
 	private void createRegionsTable() {
@@ -221,6 +226,10 @@ public class AppWindow extends JFrame implements ActionListener,
 		return textureCanvas;
 	}
 	
+	public RegionsTableModel getTableModel() {
+		return tableModel;
+	}
+	
 	public void refreshImage() {
 		try {
 			Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
@@ -295,10 +304,12 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		if (row == -1) {
 			spriteSheet.currentRegion = "";
+			regionUIPanel.setPanel(addRegionPanel);
 		} else {
 			String key = (String) regionsTable.getValueAt(row, 0);
 			
 			spriteSheet.currentRegion = key;
+			regionUIPanel.setPanel(editRegionPanel);
 		}
 		
 		repaintImage();
@@ -361,7 +372,9 @@ public class AppWindow extends JFrame implements ActionListener,
 		texturePathButton.setEnabled(true);
 		regionsTable.repaint();
 		
+		addRegionPanel.setSpriteSheet(spriteSheet);
 		editRegionPanel.setSpriteSheet(spriteSheet);
+		regionUIPanel.setPanel(addRegionPanel);
 	}
 	
 	//endregion

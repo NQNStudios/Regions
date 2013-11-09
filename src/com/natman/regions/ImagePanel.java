@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -14,7 +16,7 @@ import javax.swing.JPanel;
  * @author Natman64
  * @created Nov 3, 2013
  */
-public class ImagePanel extends JPanel {
+public class ImagePanel extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = -4866023796840902035L;
 	
@@ -27,8 +29,10 @@ public class ImagePanel extends JPanel {
 	private Image image;
 	private SpriteSheet spriteSheet;
 	
+	private AddRegionPanel addRegionPanel;
+	
 	public ImagePanel() {
-		
+		addMouseListener(this);
 	}
 	
 	public void setScale(float scale) {
@@ -63,6 +67,10 @@ public class ImagePanel extends JPanel {
 		this.spriteSheet = spriteSheet;
 	}
 	
+	public void setAddRegionPanel(AddRegionPanel addRegionPanel) {
+		this.addRegionPanel = addRegionPanel;
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -75,7 +83,7 @@ public class ImagePanel extends JPanel {
 					backgroundColor, null);
 		}
 		
-		if (spriteSheet != null) {			
+		if (spriteSheet != null && !spriteSheet.currentRegion.equals("Natman64_NOT_A_REGION")) {			
 			Iterator<Entry<String, Rectangle>> it = 
 					spriteSheet.regions.entrySet().iterator();
 			
@@ -104,5 +112,42 @@ public class ImagePanel extends JPanel {
 			}
 		}
 	}
+
+	//region Mouse Events
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (addRegionPanel == null) return;
+		
+		int x = (int) (e.getX() * scale);
+		int y = (int) (e.getY() * scale);
+		
+		if (x >= 0 && x < image.getWidth(null)
+				&& y >= 0 && y < image.getHeight(null)) {
+			addRegionPanel.imageClicked(x, y);
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	//endregion
 	
 }
