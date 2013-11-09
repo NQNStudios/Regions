@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -90,6 +91,9 @@ public class AddRegionPanel extends JPanel implements ActionListener {
 			nameRegionWindow.setVisible(false);
 			window.getTableModel().addRow(
 					new Object[] { nameRegionWindow.getName(), newRegion });
+			
+			JTable table = window.getRegionsTable();
+			table.setRowSelectionInterval(table.getRowCount() - 1, table.getRowCount() - 1);
 		}
 	}
 	

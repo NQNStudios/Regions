@@ -119,8 +119,8 @@ public class ImagePanel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (addRegionPanel == null) return;
 		
-		int x = (int) (e.getX() * scale);
-		int y = (int) (e.getY() * scale);
+		int x = (int) (e.getX() / scale);
+		int y = (int) (e.getY() / scale);
 		
 		if (x >= 0 && x < image.getWidth(null)
 				&& y >= 0 && y < image.getHeight(null)) {

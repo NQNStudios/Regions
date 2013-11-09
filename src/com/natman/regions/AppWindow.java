@@ -235,6 +235,10 @@ public class AppWindow extends JFrame implements ActionListener,
 		return tableModel;
 	}
 	
+	public JTable getRegionsTable() {
+		return regionsTable;
+	}
+	
 	public void refreshImage() {
 		try {
 			Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
