@@ -78,6 +78,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	private JScrollPane regionsPane;
 	private JTable regionsTable;
 	private JButton deselectButton;
+	private JButton deleteButton;
 	
 	private RegionsTableModel tableModel;
 	
@@ -158,6 +159,10 @@ public class AppWindow extends JFrame implements ActionListener,
         deselectButton.setActionCommand("clearSelection");
         deselectButton.addActionListener(this);
         
+        deleteButton = new JButton("Delete Region");
+        deleteButton.setActionCommand("deleteRegion");
+        deleteButton.addActionListener(this);
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 2; c.gridy = 0; 
         c.fill = GridBagConstraints.BOTH; 
@@ -166,7 +171,7 @@ public class AppWindow extends JFrame implements ActionListener,
         
         c.gridx = 2; c.gridy = 1;
         c.fill = GridBagConstraints.NONE;
-        add(deselectButton, c);
+        add(new TableButtonsPanel(deselectButton, deleteButton), c);
 	}
 
 	private void createMenuBar() {
@@ -283,6 +288,17 @@ public class AppWindow extends JFrame implements ActionListener,
 			colorOptionsWindow.setVisible(true);
 		} else if (e.getActionCommand().equals("clearSelection")) {
 			regionsTable.clearSelection();
+		} else if (e.getActionCommand().equals("deleteRegion")) {
+			int selectedRow = regionsTable.getSelectedRow();
+			
+			if (selectedRow != -1) {
+				String regionKey = (String) regionsTable.getValueAt(selectedRow, 0);
+				
+				spriteSheet.regions.remove(regionKey);
+				tableModel.removeRow(selectedRow);
+				
+				regionsTable.repaint();
+			}
 		}
 	}
 	
