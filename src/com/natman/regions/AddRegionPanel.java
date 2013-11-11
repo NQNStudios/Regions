@@ -124,8 +124,11 @@ public class AddRegionPanel extends JPanel implements ActionListener {
 			int x2 = Integer.parseInt(firstCoords[0]);
 			int y2 = Integer.parseInt(firstCoords[1]);
 			
-			int width = x2 - x1;
-			int height = y2 - y1;
+			int width = Math.abs(x2 - x1);
+			int height = Math.abs(y2 - y1);
+			
+			x1 = (x1 < x2) ? x1 : x2;
+			y1 = (y1 < y2) ? y1 : y2;
 			
 			Rectangle rect = new Rectangle(x1, y1, width, height);
 			
