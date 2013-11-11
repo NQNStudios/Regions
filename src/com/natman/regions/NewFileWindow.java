@@ -23,8 +23,8 @@ public class NewFileWindow extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 3687920556816789705L;
 	
-	private static final int WINDOW_WIDTH = 750;
-	private static final int WINDOW_HEIGHT = 475;
+	private static final int WINDOW_WIDTH = 450;
+	private static final int WINDOW_HEIGHT = 150;
 	
 	private SpriteSheet spriteSheet;
 	
