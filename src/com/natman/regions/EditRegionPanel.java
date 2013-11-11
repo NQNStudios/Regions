@@ -26,11 +26,17 @@ public class EditRegionPanel extends JPanel implements ActionListener {
 	private BasicArrowButton moveUp;
 	private BasicArrowButton moveDown;
 	
-	private JLabel resizeLabel;
-	private BasicArrowButton decWidth;
-	private BasicArrowButton incWidth;
-	private BasicArrowButton decHeight;
-	private BasicArrowButton incHeight;
+	private JLabel expandLabel;
+	private BasicArrowButton expandLeft;
+	private BasicArrowButton expandRight;
+	private BasicArrowButton expandDown;
+	private BasicArrowButton expandUp;
+	
+	private JLabel shrinkLabel;
+	private BasicArrowButton shrinkLeft;
+	private BasicArrowButton shrinkRight;
+	private BasicArrowButton shrinkDown;
+	private BasicArrowButton shrinkUp;
 	
 	private AppWindow window;
 	private SpriteSheet spriteSheet;
@@ -54,19 +60,33 @@ public class EditRegionPanel extends JPanel implements ActionListener {
 		moveDown = new BasicArrowButton(BasicArrowButton.SOUTH);
 		moveDown.setActionCommand("moveDown");
 		
-		resizeLabel = new JLabel("Resize");
+		expandLabel = new JLabel("Expand");
 		
-		decWidth = new BasicArrowButton(BasicArrowButton.WEST);
-		decWidth.setActionCommand("decWidth");
+		expandLeft = new BasicArrowButton(BasicArrowButton.WEST);
+		expandLeft.setActionCommand("expandLeft");
 		
-		incWidth = new BasicArrowButton(BasicArrowButton.EAST);
-		incWidth.setActionCommand("incWidth");
+		expandRight = new BasicArrowButton(BasicArrowButton.EAST);
+		expandRight.setActionCommand("expandRight");
 		
-		decHeight = new BasicArrowButton(BasicArrowButton.SOUTH);
-		decHeight.setActionCommand("decHeight");
+		expandDown = new BasicArrowButton(BasicArrowButton.SOUTH);
+		expandDown.setActionCommand("expandDown");
 		
-		incHeight = new BasicArrowButton(BasicArrowButton.NORTH);
-		incHeight.setActionCommand("incHeight");
+		expandUp = new BasicArrowButton(BasicArrowButton.NORTH);
+		expandUp.setActionCommand("expandUp");
+		
+		shrinkLabel = new JLabel("Shrink");
+		
+		shrinkLeft = new BasicArrowButton(BasicArrowButton.RIGHT);
+		shrinkLeft.setActionCommand("shrinkLeft");
+		
+		shrinkRight = new BasicArrowButton(BasicArrowButton.LEFT);
+		shrinkRight.setActionCommand("shrinkRight");
+		
+		shrinkDown = new BasicArrowButton(BasicArrowButton.NORTH);
+		shrinkDown.setActionCommand("shrinkDown");
+		
+		shrinkUp = new BasicArrowButton(BasicArrowButton.SOUTH);
+		shrinkUp.setActionCommand("shrinkUp");
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 5, 5, 5);
@@ -93,23 +113,43 @@ public class EditRegionPanel extends JPanel implements ActionListener {
 		
 		c.gridx = 4;
 		c.gridy = 1;
-		add(resizeLabel, c);
+		add(expandLabel, c);
 		
 		c.gridx = 3;
 		c.gridy = 1;
-		add(decWidth, c);
+		add(expandLeft, c);
 		
 		c.gridx = 5;
 		c.gridy = 1;
-		add(incWidth, c);
+		add(expandRight, c);
 		
 		c.gridx = 4;
 		c.gridy = 0;
-		add(incHeight, c);
+		add(expandUp, c);
 		
 		c.gridx = 4;
 		c.gridy = 2;
-		add(decHeight, c);
+		add(expandDown, c);
+		
+		c.gridx = 7;
+		c.gridy = 1;
+		add(shrinkLabel, c);
+		
+		c.gridx = 6;
+		c.gridy = 1;
+		add(shrinkLeft, c);
+		
+		c.gridx = 8;
+		c.gridy = 1;
+		add(shrinkRight, c);
+		
+		c.gridx = 7;
+		c.gridy = 2;
+		add(shrinkDown, c);
+		
+		c.gridx = 7;
+		c.gridy = 0;
+		add(shrinkUp, c);
 		
 		for (Component button : getComponents()) {
 			if (button instanceof BasicArrowButton) {
@@ -149,20 +189,40 @@ public class EditRegionPanel extends JPanel implements ActionListener {
 			region.y++;
 			break;
 		
-		case "decWidth":
-			region.width--;
-			break;
-			
-		case "incWidth":
+		case "expandLeft":
+			region.x--;
 			region.width++;
 			break;
 			
-		case "decHeight":
+		case "expandRight":
+			region.width++;
+			break;
+			
+		case "expandDown":
+			region.height++;
+			break;
+			
+		case "expandUp":
+			region.y--;
+			region.height++;
+			break;
+			
+		case "shrinkLeft":
+			region.width--;
+			region.x++;
+			break;
+			
+		case "shrinkRight":
+			region.width--;
+			break;
+			
+		case "shrinkDown":
 			region.height--;
 			break;
 			
-		case "incHeight":
-			region.height++;
+		case "shrinkUp":
+			region.y++;
+			region.height--;
 			break;
 			
 		}
