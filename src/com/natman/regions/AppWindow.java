@@ -263,7 +263,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("newFile")) {
-			NewFileWindow newFileWindow = new NewFileWindow();
+			NewFileWindow newFileWindow = new NewFileWindow(this);
 			newFileWindow.setVisible(true);
 		} else if (e.getActionCommand().equals("openFile")) {
 			JFileChooser openFileDialog = new JFileChooser();
@@ -339,7 +339,11 @@ public class AppWindow extends JFrame implements ActionListener,
 	
 	//region File Management
 	
-	private void openFile(File file) {
+	/**
+	 * Opens the given sprite sheet file.
+	 * @param file
+	 */
+	public void openFile(File file) {
 		tableModel.setRowCount(0);
 		spriteSheet = null;
 		

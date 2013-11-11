@@ -24,7 +24,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	private Color backgroundColor = Color.gray;
 	
 	private Color regionColor = new Color(0f, 0f, 1f, 0.3f);
-	private Color outlineColor = Color.white;;
+	private Color outlineColor = Color.white;
 	
 	private Image image;
 	private SpriteSheet spriteSheet;
@@ -119,8 +119,8 @@ public class ImagePanel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (addRegionPanel == null) return;
 		
-		int x = (int) (e.getX() / scale);
-		int y = (int) (e.getY() / scale);
+		int x = Math.round(e.getX() / scale);
+		int y = Math.round(e.getY() / scale);
 		
 		if (x >= 0 && x < image.getWidth(null)
 				&& y >= 0 && y < image.getHeight(null)) {

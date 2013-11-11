@@ -138,6 +138,11 @@ public class AddRegionPanel extends JPanel implements ActionListener {
 			
 			nameRegionWindow = new NameRegionWindow(this);
 			nameRegionWindow.setVisible(true);
+			
+			firstCorner.setText("First Corner");
+			secondCorner.setText("Second Corner");
+			button.setText("Add Region");
+			button.setActionCommand("addRegion");
 		}
 	}
 	
