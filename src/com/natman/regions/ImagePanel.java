@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
  * @author Natman64
  * @created Nov 3, 2013
  */
-public class ImagePanel extends JPanel implements MouseListener {
+public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = -4866023796840902035L;
 	
@@ -33,6 +34,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	
 	public ImagePanel() {
 		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 	
 	public void setScale(float scale) {
@@ -146,6 +148,34 @@ public class ImagePanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if (spriteSheet == null) return;
+		
+		int x = Math.round(e.getX() / scale);
+		int y = Math.round(e.getY() / scale);
+		
+		Iterator<Entry<String, Rectangle>> it = spriteSheet.regions.entrySet().iterator();
+		
+		while (it.hasNext()) {
+			Entry<String, Rectangle> entry = it.next();
+			
+			String key = entry.getKey();
+			Rectangle region = entry.getValue();
+			
+			if (region.contains(x, y)) {
+				System.out.println("This works.");
+				
+				//TODO display the key of this region somewhere.
+			}
+		}
 	}
 	
 	//endregion
