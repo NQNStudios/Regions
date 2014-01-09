@@ -44,6 +44,8 @@ public class RegionsTableModel extends DefaultTableModel {
 				String oldKey = (String) getValueAt(row, column);
 				String newKey = (String) value;
 				
+				if (newKey.isEmpty()) return;
+				
 				Rectangle region = spriteSheet.regions.get(oldKey);
 				spriteSheet.regions.remove(oldKey);
 				spriteSheet.regions.put(newKey, region);
@@ -52,10 +54,14 @@ public class RegionsTableModel extends DefaultTableModel {
 				String key = (String) getValueAt(row, column - 1);
 				String region = (String) value;
 				
-				Rectangle rect = Rectangle.parseRectangle(region);
-				
-				spriteSheet.regions.remove(key);
-				spriteSheet.regions.put(key, rect);
+				try {
+					Rectangle rect = Rectangle.parseRectangle(region);
+					
+					spriteSheet.regions.remove(key);
+					spriteSheet.regions.put(key, rect);
+				} catch (Exception e) {
+					return;
+				}
 			}
 		}
 		
