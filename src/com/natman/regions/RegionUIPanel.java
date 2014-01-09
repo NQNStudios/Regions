@@ -26,6 +26,8 @@ public class RegionUIPanel extends JPanel {
 		this.panel = panel;
 		add(panel);
 		
+		setMinimumSize(panel.getSize());
+		
 		window.validate();
 	}
 	
