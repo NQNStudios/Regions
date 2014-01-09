@@ -128,6 +128,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		c.gridx = 0; c.gridy = 0; 
 		c.fill = GridBagConstraints.NONE; 
 		add(zoomSlider, c);
+		zoomSlider.setMinimumSize(zoomSlider.getSize());
 		
 		c.gridx = 1; c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
