@@ -76,10 +76,10 @@ public class EditRegionPanel extends JPanel implements ActionListener {
 		
 		shrinkLabel = new JLabel("Shrink");
 		
-		shrinkLeft = new BasicArrowButton(BasicArrowButton.RIGHT);
+		shrinkLeft = new BasicArrowButton(BasicArrowButton.EAST);
 		shrinkLeft.setActionCommand("shrinkLeft");
 		
-		shrinkRight = new BasicArrowButton(BasicArrowButton.LEFT);
+		shrinkRight = new BasicArrowButton(BasicArrowButton.WEST);
 		shrinkRight.setActionCommand("shrinkRight");
 		
 		shrinkDown = new BasicArrowButton(BasicArrowButton.NORTH);
