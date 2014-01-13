@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
@@ -41,10 +42,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 		this.scale = scale;
 		
 		if (image != null) {
-			setPreferredSize(
-					new Dimension(
-							(int) (image.getWidth(null) * scale),
-							(int) (image.getHeight(null) * scale)));
+			setPreferredSize(imageSize());
 		}
 		
 		repaint();
@@ -59,10 +57,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 	public void setImage(Image image) {
 		this.image = image;
 		
-		setPreferredSize(
-				new Dimension(
-						(int) (image.getWidth(null) * scale),
-						(int) (image.getHeight(null) * scale)));
+		setPreferredSize(imageSize());
 	}
 	
 	public void setSpriteSheet(SpriteSheet spriteSheet) {
@@ -78,10 +73,12 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 		super.paintComponent(g);
 		
 		if (image != null) {
+			Dimension size = imageSize();
+			
 			g.drawImage(image, 
 					0, 0, 
-					(int) (image.getWidth(null) * scale),
-					(int) (image.getHeight(null) * scale),
+					size.width,
+					size.height,
 					backgroundColor, null);
 		}
 		
@@ -115,6 +112,17 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 		}
 	}
 
+	//region Fields
+	
+	private Dimension imageSize() {
+		ImageIcon icon = new ImageIcon(image);
+		return new Dimension(
+				(int) (icon.getIconWidth() * scale), 
+				(int) (icon.getIconHeight() * scale));
+	}
+	
+	//endregion
+	
 	//region Mouse Events
 	
 	@Override
@@ -172,9 +180,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 			String key = entry.getKey();
 			Rectangle region = entry.getValue();
 			
-			if (region.contains(x, y)) {
-				System.out.println("This works.");
-				
+			if (region.contains(x, y)) {				
 				setToolTipText(key);
 				
 				repaint();
