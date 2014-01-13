@@ -133,7 +133,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		c.gridx = 1; c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 14;
-		c.weighty = 4;
+		c.weighty = 8;
 		add(textureScrollPanel, c);
 		
 		c.gridx = 1; c.gridy = 1;
@@ -255,7 +255,6 @@ public class AppWindow extends JFrame implements ActionListener,
 	
 	public void repaintImage() {
 		textureCanvas.repaint();
-		//textureScrollPanel.repaint();
 	}
 	
 	//endregion
@@ -371,6 +370,7 @@ public class AppWindow extends JFrame implements ActionListener,
 					
 					BufferedImage image = null;
 					image = ImageIO.read(new File(directory + "\\" + path));
+					
 					textureCanvas.setImage(image);
 					textureCanvas.setSpriteSheet(spriteSheet);
 					textureCanvas.repaint();
