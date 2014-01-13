@@ -164,6 +164,8 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 		
 		Iterator<Entry<String, Rectangle>> it = spriteSheet.regions.entrySet().iterator();
 		
+		boolean regionSelected = false;
+		
 		while (it.hasNext()) {
 			Entry<String, Rectangle> entry = it.next();
 			
@@ -173,8 +175,17 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 			if (region.contains(x, y)) {
 				System.out.println("This works.");
 				
-				//TODO display the key of this region somewhere.
+				setToolTipText(key);
+				
+				repaint();
+				
+				regionSelected = true;
+				break;
 			}
+		}
+		
+		if (!regionSelected) {
+			setToolTipText("");
 		}
 	}
 	

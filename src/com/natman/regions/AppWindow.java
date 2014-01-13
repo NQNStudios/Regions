@@ -126,7 +126,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0; c.gridy = 0; 
-		c.fill = GridBagConstraints.NONE; 
+		c.fill = GridBagConstraints.HORIZONTAL; 
 		add(zoomSlider, c);
 		zoomSlider.setMinimumSize(zoomSlider.getSize());
 		
@@ -255,6 +255,7 @@ public class AppWindow extends JFrame implements ActionListener,
 	
 	public void repaintImage() {
 		textureCanvas.repaint();
+		zoomSlider.repaint();
 	}
 	
 	//endregion
