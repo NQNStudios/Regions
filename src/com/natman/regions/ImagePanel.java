@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 /**
  * JPanel subclass that draws the sprite sheet texture and visual region info.
@@ -32,6 +33,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 	private SpriteSheet spriteSheet;
 	
 	private AddRegionPanel addRegionPanel;
+	private JTable regionsTable;
 	
 	public ImagePanel() {
 		addMouseListener(this);
@@ -66,6 +68,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 	
 	public void setAddRegionPanel(AddRegionPanel addRegionPanel) {
 		this.addRegionPanel = addRegionPanel;
+	}
+	
+	public void setRegionsTable(JTable table) {
+		regionsTable = table;
 	}
 	
 	@Override
@@ -112,7 +118,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 		}
 	}
 
-	//region Fields
+	//region Helpers
 	
 	private Dimension imageSize() {
 		ImageIcon icon = new ImageIcon(image);
@@ -127,14 +133,22 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (addRegionPanel == null) return;
-		
-		int x = Math.round(e.getX() / scale);
-		int y = Math.round(e.getY() / scale);
-		
-		if (x >= 0 && x < image.getWidth(null)
-				&& y >= 0 && y < image.getHeight(null)) {
-			addRegionPanel.imageClicked(x, y);
+		if (addRegionPanel != null) {
+			int x = Math.round(e.getX() / scale);
+			int y = Math.round(e.getY() / scale);
+			
+			if (x >= 0 && x < image.getWidth(null)
+					&& y >= 0 && y < image.getHeight(null)) {
+				addRegionPanel.imageClicked(x, y);
+			}
+		} else if (!getToolTipText().isEmpty()) {
+			String key = getToolTipText();
+			
+			for (int i = 0; i < regionsTable.getRowCount(); i++) {
+				if (regionsTable.getValueAt(i, 0).equals(key)) {
+					regionsTable.setRowSelectionInterval(i, i);
+				}
+			}
 		}
 	}
 
@@ -166,6 +180,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (spriteSheet == null) return;
+		if (addRegionPanel != null) return;
 		
 		int x = Math.round(e.getX() / scale);
 		int y = Math.round(e.getY() / scale);

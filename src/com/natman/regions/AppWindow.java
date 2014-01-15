@@ -113,7 +113,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		Preferences prefs = Preferences.userRoot().node("Natman64_RegionsPrefs");
 		Color bgColor = Color.decode(prefs.get("BackgroundColor", "" + Color.gray.getRGB()));
 		textureCanvas.setBackgroundColor(bgColor);
-		
+		textureCanvas.setRegionsTable(regionsTable);		
 		textureScrollPanel = new JScrollPane(textureCanvas);
 		
 		zoomSlider = new JSlider(JSlider.VERTICAL, 1, 8, 1);
@@ -133,7 +133,7 @@ public class AppWindow extends JFrame implements ActionListener,
 		c.gridx = 1; c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 14;
-		c.weighty = 8;
+		c.weighty = 10;
 		add(textureScrollPanel, c);
 		
 		c.gridx = 1; c.gridy = 1;
@@ -173,6 +173,8 @@ public class AppWindow extends JFrame implements ActionListener,
         c.gridx = 2; c.gridy = 1;
         c.fill = GridBagConstraints.NONE;
         add(new TableButtonsPanel(deselectButton, deleteButton), c);
+        
+        textureCanvas.setRegionsTable(regionsTable);
 	}
 
 	private void createMenuBar() {
@@ -254,7 +256,11 @@ public class AppWindow extends JFrame implements ActionListener,
 	}
 	
 	public void repaintImage() {
+		Dimension previousSize = textureScrollPanel.getSize();
+		
 		textureCanvas.repaint();
+		
+		textureScrollPanel.setSize(previousSize);
 	}
 	
 	//endregion
@@ -334,6 +340,8 @@ public class AppWindow extends JFrame implements ActionListener,
 		}
 		
 		repaintImage();
+		
+		validate();
 	}
 	
 	//endregion
